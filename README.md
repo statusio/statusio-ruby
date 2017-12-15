@@ -2,8 +2,6 @@
 
 Ruby library wrapper for Status.io
 
-[![Travis CI](https://travis-ci.org/statusio/statusio-ruby.svg)](https://travis-ci.org/statusio/statusio-ruby)
-
 Ruby library wrapper for Status.io - A Complete Status Platform - Status pages, incident tracking, subscriber notifications and more
 
 ## Installation
@@ -29,7 +27,7 @@ Or install it yourself as:
 statusioclient = StatusioClient.new(api_key, api_id)
 ```
 
-View the last release API documentation at: http://developers.status.io/
+View the full API documentation at: http://developers.status.io/
 
 ## Development
 

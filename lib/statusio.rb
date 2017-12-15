@@ -285,8 +285,7 @@ class StatusioClient
   # @param statuspage_id(string) Status page ID
   # @param maintenance_name(string) A descriptive title for this maintenance
   # @param maintenance_details(string) Message describing this maintenance
-  # @param components(array) ID of each affected component
-  # @param containers(array) ID of each affected container
+  # @param infrastructure_affected(array) ID of each affected component and container combo
   # @param date_planned_start(string) Date maintenance is expected to start
   # @param time_planned_start(string) Time maintenance is expected to start
   # @param date_planned_end(string) Date maintenance is expected to end
@@ -299,7 +298,7 @@ class StatusioClient
   # @param maintenance_notify_72_hr(int) Notify subscribers 72 hours before scheduled maintenance start time (1 = Send notification)
   # @return object
 
-  def maintenance_schedule(statuspage_id, maintenance_name, maintenance_details, components, containers,
+  def maintenance_schedule(statuspage_id, maintenance_name, maintenance_details, infrastructure_affected,
                            date_planned_start, time_planned_start, date_planned_end, time_planned_end,
                            automation = 0, all_infrastructure_affected = 0,
                            maintenance_notify_now = 0, maintenance_notify_1_hr = 0,
@@ -308,8 +307,7 @@ class StatusioClient
     data['statuspage_id'] = statuspage_id
     data['maintenance_name'] = maintenance_name
     data['maintenance_details'] = maintenance_details
-    data['components'] = components
-    data['containers'] = containers
+    data['infrastructure_affected'] = infrastructure_affected
     data['all_infrastructure_affected'] = all_infrastructure_affected
     data['date_planned_start'] = date_planned_start
     data['time_planned_start'] = time_planned_start

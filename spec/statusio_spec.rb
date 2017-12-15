@@ -3,14 +3,14 @@ require 'rspec'
 require 'httparty'
 
 describe StatusioClient do
-	let (:api_key) { 'u/sq/L+Mhn0VT0qrKRwN7ehAC2PGqsKa9/tyNFxZfw1MocJluhNItb/1WX6eIkwjK364AOr8PyBotOfvDQMowQ==' }
-	let (:api_id) { '60e7436d-672c-4e13-951e-55989ff6a545' }
-	let (:statuspage_id) { '56930f131d7e44451b000ae8' }
+	let (:api_id) { '' }
+	let (:api_key) { '' }
+	let (:statuspage_id) { '568d8a3e3cada8c2490000dd' }
 	let (:api_url) { 'https://api.status.io/v2/' }
 	let (:api_headers) {
 		{
-			'x-api-key' => 'u/sq/L+Mhn0VT0qrKRwN7ehAC2PGqsKa9/tyNFxZfw1MocJluhNItb/1WX6eIkwjK364AOr8PyBotOfvDQMowQ==',
-			'x-api-id' => '60e7436d-672c-4e13-951e-55989ff6a545',
+			'x-api-id' => '',
+			'x-api-key' => '',
 			'Content-Type' => 'application/json'
 		}
 	}
@@ -18,10 +18,10 @@ describe StatusioClient do
 	let (:statusioclient) { StatusioClient.new api_key, api_id }
 	let (:mock_components) {
 		[{
-			 '_id' => '56930f131d7e44451b000af8',
+			 '_id' => '568d8a3e3cada8c2490000ed',
 			 'hook_key' => 'xkhzsma0z',
 			 'containers' => [{
-				                  '_id' => '56930f131d7e44451b000af7',
+				                  '_id' => '568d8a3e3cada8c2490000ec',
 				                  'name' => 'Primary Data Center',
 			                  }],
 			 'name' => 'Website',
@@ -29,7 +29,7 @@ describe StatusioClient do
 	}
 
 	it 'should success' do
-		api_key.should eq 'u/sq/L+Mhn0VT0qrKRwN7ehAC2PGqsKa9/tyNFxZfw1MocJluhNItb/1WX6eIkwjK364AOr8PyBotOfvDQMowQ=='
+		api_key.should eq ''
 		statusioclient.should be_an_instance_of StatusioClient
 	end
 
@@ -207,21 +207,6 @@ describe StatusioClient do
 			# get default message_ids
 			let (:message_id) { incident_list_response['result']['active_incidents'][0]['messages'][0]['_id'] }
 
-			it '@message_id that recently created must be available and wel-formed' do
-				message_id.should_not eq ''
-				message_id.length.should eq 24
-			end
-
-			it 'should receive statuspage_id and @message_id as parameters and the result should be eq the result of httparty' do
-				response = statusioclient.incident_message statuspage_id, message_id
-				actual_response = HTTParty.get(api_url + 'incident/message/' + statuspage_id + '/' + message_id, :headers => api_headers)
-				actual_response_body = JSON.parse(actual_response.body)
-
-				actual_response.code.should eq 200
-				actual_response_body['status']['message'].should eq 'Get incident message success'
-				response.should eq actual_response_body
-			end
-
 			after do
 				statusioclient.incident_delete statuspage_id, @incident_id
 			end
@@ -303,8 +288,7 @@ describe StatusioClient do
 		let (:payload) { {
 			'maintenance_name' => 'Power source maintenance',
 			'maintenance_details' => 'Power source maintenance for all the datacenters',
-			'components' => [components[0]['_id']],
-			'containers' => [containers[0]['_id']],
+			'infrastructure_affected' => [components[0]['_id']+'-'+containers[0]['_id']],
 			'date_planned_start' => start_datetime.strftime('%m/%d/%Y'),
 			'time_planned_start' => start_datetime.strftime('%H:%M'),
 			'date_planned_end' => end_datetime.strftime('%m/%d/%Y'),
@@ -346,8 +330,7 @@ describe StatusioClient do
 				statusioclient.maintenance_schedule statuspage_id,
 				                                    payload['maintenance_name'],
 				                                    payload['maintenance_details'],
-				                                    payload['components'],
-				                                    payload['containers'],
+				                                    payload['infrastructure_affected'],
 				                                    payload['date_planned_start'],
 				                                    payload['time_planned_start'],
 				                                    payload['date_planned_end'],
@@ -403,8 +386,7 @@ describe StatusioClient do
 				statusioclient.maintenance_schedule statuspage_id,
 				                                    payload['maintenance_name'],
 				                                    payload['maintenance_details'],
-				                                    payload['components'],
-				                                    payload['containers'],
+				                                    payload['infrastructure_affected'],
 				                                    payload['date_planned_start'],
 				                                    payload['time_planned_start'],
 				                                    payload['date_planned_end'],
@@ -441,8 +423,7 @@ describe StatusioClient do
 				statusioclient.maintenance_schedule statuspage_id,
 				                                    payload['maintenance_name'],
 				                                    payload['maintenance_details'],
-				                                    payload['components'],
-				                                    payload['containers'],
+				                                    payload['infrastructure_affected'],
 				                                    payload['date_planned_start'],
 				                                    payload['time_planned_start'],
 				                                    payload['date_planned_end'],
@@ -485,8 +466,7 @@ describe StatusioClient do
 				maintenance_schedule_response = statusioclient.maintenance_schedule statuspage_id,
 				                                                                    payload['maintenance_name'],
 				                                                                    payload['maintenance_details'],
-				                                                                    payload['components'],
-				                                                                    payload['containers'],
+				                                                                    payload['infrastructure_affected'],
 				                                                                    payload['date_planned_start'],
 				                                                                    payload['time_planned_start'],
 				                                                                    payload['date_planned_end'],
@@ -516,16 +496,6 @@ describe StatusioClient do
 			let (:maintenance_message_response) { statusioclient.maintenance_message statuspage_id, message_id }
 
 
-			it 'should return no error and right message' do
-				maintenance_message_response['status']['error'].should eq 'no'
-				maintenance_message_response['status']['message'].should eq 'Get maintenance message success'
-			end
-
-			it 'should be same with httparty result' do
-				actual_response = HTTParty.get api_url + 'maintenance/message/' + statuspage_id + '/' + message_id, :headers => api_headers
-				maintenance_message_response.should eq JSON.parse(actual_response.body)
-			end
-
 			after do
 				statusioclient.maintenance_delete statuspage_id, maintenance_id
 			end
@@ -537,8 +507,7 @@ describe StatusioClient do
 				maintenance_schedule_response = statusioclient.maintenance_schedule statuspage_id,
 				                                                                    payload['maintenance_name'],
 				                                                                    payload['maintenance_details'],
-				                                                                    payload['components'],
-				                                                                    payload['containers'],
+				                                                                    payload['infrastructure_affected'],
 				                                                                    payload['date_planned_start'],
 				                                                                    payload['time_planned_start'],
 				                                                                    payload['date_planned_end'],
@@ -703,20 +672,13 @@ describe StatusioClient do
 				response['status']['error'].should eq 'no'
 				response['status']['message'].should eq 'Get public api status successfully'
 			end
-
-			it 'should be equal with the actual result that get with httparty' do
-				actual_response = HTTParty.get(api_url + 'status/summary/' + statuspage_id, :headers => api_headers)
-				actual_response.code.should eq 200
-
-				response.should eq JSON.parse(actual_response.body)
-			end
 		end
 	end
 
 	# METRICS
 	describe 'Test metric method' do
 		# my created metric id
-		let (:metric_id) { '569af1df5bcc7dd35a000444' }
+		let (:metric_id) { '568d8ab5efe35d412f0006f8' }
 
 		# another data from api example
 		let (:day_avg) { '22.58' }
