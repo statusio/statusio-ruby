@@ -164,21 +164,19 @@ class StatusioClient
   # @param statuspage_id(string) Status page ID
   # @param incident_name(string) A descriptive title for the incident
   # @param incident_details(string) Message describing this incident
-  # @param components(array) ID of each affected component
-  # @param containers(array) ID of each affected container
+  # @param infrastructure_affected(array) ID of each affected component and container combo
   # @param current_status(int) The status of the components and containers affected by this incident (StatusioClient::STATUS_#).
   # @param current_state(int) The state of this incident (StatusioClient::STATE_#).
   # @param notifications(int) Bitmasked notifications (StatusioClient::NOTIFY_#). To use multiple just add them up (ie StatusioClient::NOTIFY_SMS + StatusioClient::NOTIFY_SLACK).
   # @param all_infrastructure_affected(int) Affect all components and containers (default = 0)
   # @return object
 
-  def incident_create(statuspage_id, incident_name, incident_details, components, containers, current_status, current_state, notifications = 0, all_infrastructure_affected = 0)
+  def incident_create(statuspage_id, incident_name, incident_details, infrastructure_affected, current_status, current_state, notifications = 0, all_infrastructure_affected = 0)
     data = get_notify(notifications)
     data['statuspage_id'] = statuspage_id
     data['incident_name'] = incident_name
     data['incident_details'] = incident_details
-    data['components'] = components
-    data['containers'] = containers
+    data['infrastructure_affected'] = infrastructure_affected
     data['current_status'] = current_status
     data['current_state'] = current_state
     data['all_infrastructure_affected'] = all_infrastructure_affected

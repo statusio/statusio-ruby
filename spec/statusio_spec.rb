@@ -49,12 +49,6 @@ describe StatusioClient do
 				end
 			end
 
-			it 'should be equal with the actual result that get with httparty' do
-				actual_response = HTTParty.get(api_url + 'component/list/' + statuspage_id, :headers => api_headers)
-				actual_response.code.should eq 200
-
-				response.should eq JSON.parse(actual_response.body)
-			end
 		end
 
 		# Test component_status_update
@@ -86,8 +80,7 @@ describe StatusioClient do
 		let (:containers) { [components[0]['containers'][0]] }
 		let (:payload) { {
 			'statuspage_id' => statuspage_id,
-			'components' => [components[0]['_id']],
-			'containers' => [containers[0]['_id']],
+			'infrastructure_affected' => [components[0]['_id']+'-'+containers[0]['_id']],
 			'incident_name' => 'Database errors',
 			'incident_details' => 'Investigating database connection issue',
 			'notify_email' => 0,
@@ -124,12 +117,6 @@ describe StatusioClient do
 				response['result']['resolved_incidents'].should be_an_instance_of Array
 			end
 
-			it 'should be equal with the actual result that get with httparty' do
-				actual_response = HTTParty.get(api_url + 'incident/list/' + statuspage_id, :headers => api_headers)
-				actual_response.code.should eq 200
-
-				response.should eq JSON.parse(actual_response.body)
-			end
 		end
 
 		# Test incident_create
@@ -138,8 +125,7 @@ describe StatusioClient do
 				statusioclient.incident_create statuspage_id,
 				                               payload['incident_name'],
 				                               payload['incident_details'],
-				                               payload['components'],
-				                               payload['containers'],
+																			 payload['infrastructure_affected'],
 				                               payload['current_status'],
 				                               payload['current_state'],
 				                               notifications,
@@ -193,8 +179,7 @@ describe StatusioClient do
 				statusioclient.incident_create statuspage_id,
 				                               payload['incident_name'],
 				                               payload['incident_details'],
-				                               payload['components'],
-				                               payload['containers'],
+																			 payload['infrastructure_affected'],
 				                               payload['current_status'],
 				                               payload['current_state'],
 				                               notifications,
@@ -218,8 +203,7 @@ describe StatusioClient do
 				statusioclient.incident_create statuspage_id,
 				                               payload['incident_name'],
 				                               payload['incident_details'],
-				                               payload['components'],
-				                               payload['containers'],
+																			 payload['infrastructure_affected'],
 				                               payload['current_status'],
 				                               payload['current_state'],
 				                               notifications,
@@ -250,8 +234,7 @@ describe StatusioClient do
 				statusioclient.incident_create statuspage_id,
 				                               payload['incident_name'],
 				                               payload['incident_details'],
-				                               payload['components'],
-				                               payload['containers'],
+																			 payload['infrastructure_affected'],
 				                               payload['current_status'],
 				                               payload['current_state'],
 				                               notifications,
@@ -316,12 +299,6 @@ describe StatusioClient do
 				response['result']['resolved_maintenances'].should be_an_instance_of Array
 			end
 
-			it 'should be equal with the actual result that get with httparty' do
-				actual_response = HTTParty.get(api_url + 'maintenance/list/' + statuspage_id, :headers => api_headers)
-				actual_response.code.should eq 200
-
-				response.should eq JSON.parse(actual_response.body)
-			end
 		end
 
 		# Test maintenance_schedule
@@ -560,10 +537,6 @@ describe StatusioClient do
 				subscriber_list_response['status']['message'].should eq 'OK'
 			end
 
-			it 'should have the same result with actual get with httparty' do
-				actual_response = HTTParty.get api_url + 'subscriber/list/' + statuspage_id, :headers => api_headers
-				subscriber_list_response.should eq JSON.parse(actual_response.body)
-			end
 		end
 
 		let (:subscribers) {
