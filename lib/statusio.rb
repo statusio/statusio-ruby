@@ -145,6 +145,16 @@ class StatusioClient
             :url     => @url + 'incident/list/' + statuspage_id
   end
 
+  ##
+  # List all active and resolved incidents by ID.
+  #
+  # @param statuspage_id(string) Status page ID
+  # @return object
+
+  def incident_list_by_id(statuspage_id)
+    request :method  => :get,
+            :url     => @url + 'incidents/' + statuspage_id
+  end
 
   ##
   # Display incident message.
@@ -156,6 +166,18 @@ class StatusioClient
   def incident_message(statuspage_id, message_id)
     request :method  => :get,
             :url     => @url + 'incident/message/' + statuspage_id + '/' + message_id
+  end
+
+  ##
+  # Get single incident.
+  #
+  # @param  statuspage_id(string) Status page ID
+  # @param incident_id(string) Incident ID
+  # @return object
+
+  def incident_single(statuspage_id, incident_id)
+    request :method  => :get,
+            :url     => @url + 'incident/' + statuspage_id + '/' + incident_id
   end
 
   ##
@@ -266,6 +288,18 @@ class StatusioClient
   end
 
   ##
+  # List all active, resolved and upcoming maintenances by ID
+  #
+  # @param statuspage_id(string) Status page ID
+  # @return object
+  #/
+
+  def maintenance_list_by_id(statuspage_id)
+    request :method => :get,
+            :url    => @url + 'maintenances/' + statuspage_id
+  end
+
+  ##
   # Display maintenance message
   #
   # @param statuspage_id(string) Status page ID
@@ -275,6 +309,18 @@ class StatusioClient
   def maintenance_message(statuspage_id, message_id)
     request :method  => :get,
             :url     => @url + 'maintenance/message/' + statuspage_id + '/' + message_id
+  end
+
+  ##
+  # Get single maintenance
+  #
+  # @param statuspage_id(string) Status page ID
+  # @param maintenance_id(string) Maintenance ID
+  # @return object
+
+  def maintenance_single(statuspage_id, maintenance_id)
+    request :method  => :get,
+            :url     => @url + 'maintenance/' + statuspage_id + '/' + maintenance_id
   end
 
   ##
