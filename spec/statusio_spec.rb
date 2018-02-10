@@ -53,12 +53,12 @@ describe StatusioClient do
 
 		# Test component_status_update
 		describe '#component_status_update' do
-			let (:components) { [mock_components[0]] }
-			let (:containers) { [components[0]['containers'][0]] }
+			let (:component) { '568d8a3e3cada8c2490000ed' }
+			let (:container) { '568d8a3e3cada8c2490000ec' }
 			let (:component_status_update_response) {
 				statusioclient.component_status_update statuspage_id,
-				                                       [components[0]['_id']],
-				                                       [containers[0]['_id']],
+				                                       component,
+				                                       container,
 				                                       '#Test updating component',
 				                                       StatusioClient::STATUS_OPERATIONAL
 			}

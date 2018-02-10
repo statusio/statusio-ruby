@@ -114,19 +114,19 @@ class StatusioClient
   # Update the status of a component on the fly without creating an incident or maintenance.
   #
   # @param statuspage_id(string) string Status page ID
-  # @param components(array) ID of each affected component
-  # @param containers(array) ID of each affected container
+  # @param component(string) ID of affected component
+  # @param container(string) ID of affected container
   # @param details(string) A brief message describing this update
   # @param current_status(int) Any numeric status code.
   # @return object
 
-  def component_status_update(statuspage_id, components, containers, details, current_status)
+  def component_status_update(statuspage_id, component, container, details, current_status)
     request :method  => :post,
             :url     => @url + 'component/status/update',
             :payload => {
               'statuspage_id'  => statuspage_id,
-              'components'     => components,
-              'containers'     => containers,
+              'component'     => component,
+              'container'     => container,
               'details'        => details,
               'current_status' => current_status
             }
