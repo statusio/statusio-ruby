@@ -190,10 +190,10 @@ class StatusioClient
   # @param current_status(int) The status of the components and containers affected by this incident (StatusioClient::STATUS_#).
   # @param current_state(int) The state of this incident (StatusioClient::STATE_#).
   # @param notifications(int) Bitmasked notifications (StatusioClient::NOTIFY_#). To use multiple just add them up (ie StatusioClient::NOTIFY_SMS + StatusioClient::NOTIFY_SLACK).
-  # @param all_infrastructure_affected(int) Affect all components and containers (default = 0)
+  # @param all_infrastructure_affected(string) Affect all components and containers (default = 0)
   # @return object
 
-  def incident_create(statuspage_id, incident_name, incident_details, infrastructure_affected, current_status, current_state, notifications = 0, all_infrastructure_affected = 0)
+  def incident_create(statuspage_id, incident_name, incident_details, infrastructure_affected, current_status, current_state, notifications = 0, all_infrastructure_affected = "0")
     data = get_notify(notifications)
     data['statuspage_id'] = statuspage_id
     data['incident_name'] = incident_name
@@ -334,19 +334,19 @@ class StatusioClient
   # @param time_planned_start(string) Time maintenance is expected to start
   # @param date_planned_end(string) Date maintenance is expected to end
   # @param time_planned_end(string) Time maintenance is expected to end
-  # @param automation(int) Automatically start and end the maintenance (default = 0)
-  # @param all_infrastructure_affected(int) Affect all components and containers (default = 0)
-  # @param maintenance_notify_now(int) Notify subscribers now (1 = Send notification)
-  # @param maintenance_notify_1_hr(int) Notify subscribers 1 hour before scheduled maintenance start time (1 = Send notification)
-  # @param maintenance_notify_24_hr(int) Notify subscribers 24 hours before scheduled maintenance start time (1 = Send notification)
-  # @param maintenance_notify_72_hr(int) Notify subscribers 72 hours before scheduled maintenance start time (1 = Send notification)
+  # @param automation(string) Automatically start and end the maintenance (default = 0)
+  # @param all_infrastructure_affected(string) Affect all components and containers (default = 0)
+  # @param maintenance_notify_now(string) Notify subscribers now (1 = Send notification)
+  # @param maintenance_notify_1_hr(string) Notify subscribers 1 hour before scheduled maintenance start time (1 = Send notification)
+  # @param maintenance_notify_24_hr(string) Notify subscribers 24 hours before scheduled maintenance start time (1 = Send notification)
+  # @param maintenance_notify_72_hr(string) Notify subscribers 72 hours before scheduled maintenance start time (1 = Send notification)
   # @return object
 
   def maintenance_schedule(statuspage_id, maintenance_name, maintenance_details, infrastructure_affected,
                            date_planned_start, time_planned_start, date_planned_end, time_planned_end,
-                           automation = 0, all_infrastructure_affected = 0,
-                           maintenance_notify_now = 0, maintenance_notify_1_hr = 0,
-                           maintenance_notify_24_hr = 0, maintenance_notify_72_hr = 0)
+                           automation = "0", all_infrastructure_affected = "0",
+                           maintenance_notify_now = "0", maintenance_notify_1_hr = "0",
+                           maintenance_notify_24_hr = "0", maintenance_notify_72_hr = "0")
     data = {}
     data['statuspage_id'] = statuspage_id
     data['maintenance_name'] = maintenance_name
