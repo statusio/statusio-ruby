@@ -92,6 +92,7 @@ describe StatusioClient do
 			'slack' => 0,
 			'current_status' => StatusioClient::STATUS_PARTIAL_SERVICE_DISRUPTION,
 			'current_state' => StatusioClient::STATE_INVESTIGATING,
+			'message_subject' => 'Example notification message subject',
 			'all_infrastructure_affected' => '0'
 		} }
 
@@ -128,6 +129,7 @@ describe StatusioClient do
 																			 payload['infrastructure_affected'],
 				                               payload['current_status'],
 				                               payload['current_state'],
+				                               payload['message_subject'],
 				                               notifications,
 				                               payload['all_infrastructure_affected']
 			}
@@ -182,6 +184,7 @@ describe StatusioClient do
 																			 payload['infrastructure_affected'],
 				                               payload['current_status'],
 				                               payload['current_state'],
+                                       payload['message_subject'],
 				                               notifications,
 				                               payload['all_infrastructure_affected']
 			}
@@ -206,7 +209,8 @@ describe StatusioClient do
 																			 payload['infrastructure_affected'],
 				                               payload['current_status'],
 				                               payload['current_state'],
-				                               notifications,
+				                               payload['message_subject'],
+                                       notifications,
 				                               payload['all_infrastructure_affected']
 			}
 
@@ -214,9 +218,10 @@ describe StatusioClient do
 
 			it 'should receive parameters and update the incident without any error returned' do
 				incident_details = 'Incident fixed'
+        message_subject = 'Example notification message subject'
 				current_status = StatusioClient::STATUS_OPERATIONAL
 				current_state = StatusioClient::STATE_MONITORING
-				response = statusioclient.incident_update statuspage_id, incident_id, incident_details, current_status, current_state, StatusioClient::NOTIFY_SMS
+				response = statusioclient.incident_update statuspage_id, incident_id, incident_details, current_status, current_state, message_subject, StatusioClient::NOTIFY_SMS
 
 				response['status']['error'].should eq 'no'
 				response['status']['message'].should eq 'OK'
@@ -237,6 +242,7 @@ describe StatusioClient do
 																			 payload['infrastructure_affected'],
 				                               payload['current_status'],
 				                               payload['current_state'],
+				                               payload['message_subject'],
 				                               notifications,
 				                               payload['all_infrastructure_affected']
 			}
@@ -245,9 +251,10 @@ describe StatusioClient do
 
 			it 'should receive parameters and resolve the incident without any error returned' do
 				incident_details = 'Incident resolved'
+        message_subject = 'Example notification message subject'
 				current_status = StatusioClient::STATUS_OPERATIONAL
 				current_state = StatusioClient::STATE_MONITORING
-				response = statusioclient.incident_resolve statuspage_id, incident_id, incident_details, current_status, current_state, StatusioClient::NOTIFY_SMS
+				response = statusioclient.incident_resolve statuspage_id, incident_id, incident_details, current_status, current_state, message_subject, StatusioClient::NOTIFY_SMS
 
 				response['status']['error'].should eq 'no'
 				response['status']['message'].should eq 'OK'
@@ -271,6 +278,7 @@ describe StatusioClient do
 		let (:payload) { {
 			'maintenance_name' => 'Power source maintenance',
 			'maintenance_details' => 'Power source maintenance for all the datacenters',
+			'message_subject' => 'Example notification message subject',
 			'infrastructure_affected' => [components[0]['_id']+'-'+containers[0]['_id']],
 			'date_planned_start' => start_datetime.strftime('%m/%d/%Y'),
 			'time_planned_start' => start_datetime.strftime('%H:%M'),
@@ -312,6 +320,7 @@ describe StatusioClient do
 				                                    payload['time_planned_start'],
 				                                    payload['date_planned_end'],
 				                                    payload['time_planned_end'],
+				                                    payload['message_subject'],
 				                                    payload['automation'],
 				                                    payload['all_infrastructure_affected'],
 				                                    payload['maintenance_notify_now'],
@@ -368,6 +377,7 @@ describe StatusioClient do
 				                                    payload['time_planned_start'],
 				                                    payload['date_planned_end'],
 				                                    payload['time_planned_end'],
+                                            payload['message_subject'],
 				                                    payload['automation'],
 				                                    payload['all_infrastructure_affected'],
 				                                    payload['maintenance_notify_now'],
@@ -382,6 +392,7 @@ describe StatusioClient do
 				response = statusioclient.maintenance_start statuspage_id,
 				                                            maintenance_id,
 				                                            payload['maintenance_name'] + ' : started ' + Time.now.strftime('%d/%m/%Y %H:%M'),
+                                                    payload['message_subject'],
 				                                            StatusioClient::NOTIFY_EMAIL
 
 				response['status']['error'].should eq 'no'
@@ -405,6 +416,7 @@ describe StatusioClient do
 				                                    payload['time_planned_start'],
 				                                    payload['date_planned_end'],
 				                                    payload['time_planned_end'],
+                                            payload['message_subject'],
 				                                    payload['automation'],
 				                                    payload['all_infrastructure_affected'],
 				                                    payload['maintenance_notify_now'],
@@ -418,6 +430,7 @@ describe StatusioClient do
 				statusioclient.maintenance_start statuspage_id,
 				                                 maintenance_id,
 				                                 payload['maintenance_name'] + ' : started ' + Time.now.strftime('%d/%m/%Y %H:%M'),
+                                         payload['message_subject'],
 				                                 StatusioClient::NOTIFY_EMAIL
 			}
 
@@ -425,6 +438,7 @@ describe StatusioClient do
 				response = statusioclient.maintenance_finish statuspage_id,
 				                                             maintenance_id,
 				                                             'Maintenance finished ' + Time.now.strftime('%d/%m/%Y %H:%M'),
+                                                     'Example notification message subject',
 				                                             StatusioClient::NOTIFY_EMAIL
 
 				response['status']['error'].should eq 'no'
@@ -448,6 +462,7 @@ describe StatusioClient do
 				                                                                    payload['time_planned_start'],
 				                                                                    payload['date_planned_end'],
 				                                                                    payload['time_planned_end'],
+                                                                            payload['message_subject'],
 				                                                                    payload['automation'],
 				                                                                    payload['all_infrastructure_affected'],
 				                                                                    payload['maintenance_notify_now'],
@@ -489,6 +504,7 @@ describe StatusioClient do
 				                                                                    payload['time_planned_start'],
 				                                                                    payload['date_planned_end'],
 				                                                                    payload['time_planned_end'],
+                                                                            payload['message_subject'],
 				                                                                    payload['automation'],
 				                                                                    payload['all_infrastructure_affected'],
 				                                                                    payload['maintenance_notify_now'],
@@ -503,6 +519,7 @@ describe StatusioClient do
 				statusioclient.maintenance_update statuspage_id,
 				                                  maintenance_id,
 				                                  'This maintenance details should be updated.',
+                                          'Example notification message subject',
 				                                  StatusioClient::NOTIFY_EMAIL
 			}
 
