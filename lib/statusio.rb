@@ -536,11 +536,11 @@ class StatusioClient
   # @param statuspage_id(string) Status page ID
   # @param method(string) Communication method of subscriber. Valid methods are `email`, `sms` or `webhook`
   # @param address(string) Subscriber address (SMS number must include country code ie. +1)
-  # @param silent(int) Supress the welcome message (1 = Do not send notification)
+  # @param silent(string) Suppress the welcome message (1 = Do not send notification)
   # @param granular(string) List of component_container combos
   # @return object
 
-  def subscriber_add(statuspage_id, method, address, silent = 1, granular = '')
+  def subscriber_add(statuspage_id, method, address, silent = '1', granular = '')
     data = {}
     data['statuspage_id'] = statuspage_id
     data['method'] = method
