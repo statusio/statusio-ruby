@@ -189,12 +189,12 @@ class StatusioClient
   # @param infrastructure_affected(array) ID of each affected component and container combo
   # @param current_status(int) The status of the components and containers affected by this incident (StatusioClient::STATUS_#).
   # @param current_state(int) The state of this incident (StatusioClient::STATE_#).
-  # @param message_subject(string) Message subject for email notifications
   # @param notifications(int) Bitmasked notifications (StatusioClient::NOTIFY_#). To use multiple just add them up (ie StatusioClient::NOTIFY_SMS + StatusioClient::NOTIFY_SLACK).
   # @param all_infrastructure_affected(string) Affect all components and containers (default = 0)
+  # @param message_subject(string) Message subject for email notifications (default = Status Notification)
   # @return object
 
-  def incident_create(statuspage_id, incident_name, incident_details, infrastructure_affected, current_status, current_state, message_subject, notifications = 0, all_infrastructure_affected = "0")
+  def incident_create(statuspage_id, incident_name, incident_details, infrastructure_affected, current_status, current_state, notifications = 0, all_infrastructure_affected = "0", message_subject = "Status Notification")
     data = get_notify(notifications)
     data['statuspage_id'] = statuspage_id
     data['incident_name'] = incident_name
@@ -202,8 +202,8 @@ class StatusioClient
     data['infrastructure_affected'] = infrastructure_affected
     data['current_status'] = current_status
     data['current_state'] = current_state
-    data['message_subject'] = message_subject
     data['all_infrastructure_affected'] = all_infrastructure_affected
+    data['message_subject'] = message_subject
 
     request :method  => :post,
     	      :url     => @url + 'incident/create',
@@ -218,11 +218,11 @@ class StatusioClient
   # @param incident_details(string) Message describing this incident
   # @param current_status(int) The status of the components and containers affected by this incident (StatusioClient::STATUS_#).
   # @param current_state(int) The state of this incident (StatusioClient::STATE_#).
-  # @param message_subject(string) Message subject for email notifications
   # @param notifications(int) Bitmasked notifications (StatusioClient::NOTIFY_#). To use multiple just add them up (ie StatusioClient::NOTIFY_SMS + StatusioClient::NOTIFY_SLACK).
+  # @param message_subject(string) Message subject for email notifications (default = Status Notification)
   # @return object
 
-  def incident_update(statuspage_id, incident_id, incident_details, current_status, current_state, message_subject, notifications = 0)
+  def incident_update(statuspage_id, incident_id, incident_details, current_status, current_state, notifications = 0, message_subject = "Status Notification")
     data = get_notify(notifications)
     data['statuspage_id'] = statuspage_id
     data['incident_id'] = incident_id
@@ -244,11 +244,11 @@ class StatusioClient
   # @param incident_details(string) Message describing this incident
   # @param current_status(int) The status of the components and containers affected by this incident (StatusioClient::STATUS_#).
   # @param current_state(int) The state of this incident (StatusioClient::STATE_#).
-  # @param message_subject(string) Message subject for email notifications
   # @param notifications(int) Bitmasked notifications (StatusioClient::NOTIFY_#). To use multiple just add them up (ie StatusioClient::NOTIFY_SMS + StatusioClient::NOTIFY_SLACK).
+  # @param message_subject(string) Message subject for email notifications (default = Status Notification)
   # @return object
 
-  def incident_resolve(statuspage_id, incident_id, incident_details, current_status, current_state, message_subject, notifications = 0)
+  def incident_resolve(statuspage_id, incident_id, incident_details, current_status, current_state, notifications = 0, message_subject = "Status Notification")
     data = get_notify(notifications)
     data['statuspage_id'] = statuspage_id
     data['incident_id'] = incident_id
@@ -340,20 +340,20 @@ class StatusioClient
   # @param time_planned_start(string) Time maintenance is expected to start
   # @param date_planned_end(string) Date maintenance is expected to end
   # @param time_planned_end(string) Time maintenance is expected to end
-  # @param message_subject(string) Message subject for email notifications
   # @param automation(string) Automatically start and end the maintenance (default = 0)
   # @param all_infrastructure_affected(string) Affect all components and containers (default = 0)
   # @param maintenance_notify_now(string) Notify subscribers now (1 = Send notification)
   # @param maintenance_notify_1_hr(string) Notify subscribers 1 hour before scheduled maintenance start time (1 = Send notification)
   # @param maintenance_notify_24_hr(string) Notify subscribers 24 hours before scheduled maintenance start time (1 = Send notification)
   # @param maintenance_notify_72_hr(string) Notify subscribers 72 hours before scheduled maintenance start time (1 = Send notification)
+  # @param message_subject(string) Message subject for email notifications (default = Maintenance Notification)
   # @return object
 
   def maintenance_schedule(statuspage_id, maintenance_name, maintenance_details, infrastructure_affected,
                            date_planned_start, time_planned_start, date_planned_end, time_planned_end,
-                           message_subject, automation = "0", all_infrastructure_affected = "0",
+                           automation = "0", all_infrastructure_affected = "0",
                            maintenance_notify_now = "0", maintenance_notify_1_hr = "0",
-                           maintenance_notify_24_hr = "0", maintenance_notify_72_hr = "0")
+                           maintenance_notify_24_hr = "0", maintenance_notify_72_hr = "0", message_subject = "Maintenance Notification")
     data = {}
     data['statuspage_id'] = statuspage_id
     data['maintenance_name'] = maintenance_name
@@ -364,12 +364,12 @@ class StatusioClient
     data['time_planned_start'] = time_planned_start
     data['date_planned_end'] = date_planned_end
     data['time_planned_end'] = time_planned_end
-    data['message_subject'] = message_subject
     data['automation'] = automation
     data['maintenance_notify_now'] = maintenance_notify_now
     data['maintenance_notify_1_hr'] = maintenance_notify_1_hr
     data['maintenance_notify_24_hr'] = maintenance_notify_24_hr
     data['maintenance_notify_72_hr'] = maintenance_notify_72_hr
+    data['message_subject'] = message_subject
 
     request :method  => :post,
             :url     => @url + 'maintenance/schedule',
@@ -382,11 +382,11 @@ class StatusioClient
   # @param statuspage_id(string) Status page ID
   # @param maintenance_id(string) Maintenance ID
   # @param maintenance_details(string) Message describing this maintenance update
-  # @param message_subject(string) Message subject for email notifications
   # @param notifications(int) Bitmasked notifications (StatusioClient::NOTIFY_#). To use multiple just add them up (ie StatusioClient::NOTIFY_SMS + StatusioClient::NOTIFY_SLACK).
+  # @param message_subject(string) Message subject for email notifications (default = Maintenance Notification)
   # @return object
 
-  def maintenance_start(statuspage_id, maintenance_id, maintenance_details, message_subject, notifications = 0)
+  def maintenance_start(statuspage_id, maintenance_id, maintenance_details, notifications = 0, message_subject = "Maintenance Notification")
     data = get_notify(notifications)
     data['statuspage_id'] = statuspage_id
     data['maintenance_id'] = maintenance_id
@@ -404,11 +404,11 @@ class StatusioClient
   # @param statuspage_id(string) Status page ID
   # @param maintenance_id(string) Maintenance ID
   # @param maintenance_details(string) Message describing this maintenance
-  # @param message_subject(string) Message subject for email notifications
   # @param notifications(int) Bitmasked notifications (StatusioClient::NOTIFY_#). To use multiple just add them up (ie StatusioClient::NOTIFY_SMS + StatusioClient::NOTIFY_SLACK).
+  # @param message_subject(string) Message subject for email notifications (default = Maintenance Notification)
   # @return object
 
-  def maintenance_update(statuspage_id, maintenance_id, maintenance_details, message_subject, notifications = 0)
+  def maintenance_update(statuspage_id, maintenance_id, maintenance_details, notifications = 0, message_subject = "Maintenance Notification")
     data = get_notify(notifications)
     data['statuspage_id'] = statuspage_id
     data['maintenance_id'] = maintenance_id
@@ -426,11 +426,11 @@ class StatusioClient
   # @param statuspage_id(string) Status page ID
   # @param maintenance_id(string) Maintenance ID
   # @param maintenance_details(string) Message describing this maintenance
-  # @param message_subject(string) Message subject for email notifications
   # @param notifications(int) Bitmasked notifications (StatusioClient::NOTIFY_#). To use multiple just add them up (ie StatusioClient::NOTIFY_SMS + StatusioClient::NOTIFY_SLACK).
+  # @param message_subject(string) Message subject for email notifications (default = Maintenance Notification)
   # @return object
 
-  def maintenance_finish(statuspage_id, maintenance_id, maintenance_details, message_subject, notifications = 0)
+  def maintenance_finish(statuspage_id, maintenance_id, maintenance_details, notifications = 0, message_subject = "Maintenance Notification")
     data = get_notify(notifications)
     data['statuspage_id'] = statuspage_id
     data['maintenance_id'] = maintenance_id
