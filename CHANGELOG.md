@@ -25,5 +25,9 @@
 ### v0.2.2 (2017/12/14)
 - Updated maintenance/schedule to handle infrastructure_affected combos
 
+### v0.2.1 (2016/2/11)
+- Refactor API calls into a #request method (@seanhandley)
+- Depend on rest-client gem in runtime (@Nowaker)
+
 ### v0.1.0 (2016/1/19)
 - Initial release
