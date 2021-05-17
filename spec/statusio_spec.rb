@@ -90,6 +90,7 @@ describe StatusioClient do
 			'irc' => 0,
 			'hipchat' => 0,
 			'slack' => 0,
+			'msteams' => 0,
 			'current_status' => StatusioClient::STATUS_PARTIAL_SERVICE_DISRUPTION,
 			'current_state' => StatusioClient::STATE_INVESTIGATING,
 			'all_infrastructure_affected' => '0'

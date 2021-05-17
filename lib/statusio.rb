@@ -25,6 +25,7 @@ class StatusioClient
   NOTIFY_IRC = 16
   NOTIFY_HIPCHAT = 32
   NOTIFY_SLACK = 64
+  NOTIFY_MSTEAMS = 128
 
   def initialize(api_key, api_id)
     @api_key = api_key
@@ -50,7 +51,8 @@ class StatusioClient
       'social' => '0',
       'irc' => '0',
       'hipchat' => '0',
-      'slack' => '0'
+      'slack' => '0',
+      'msteams' => '0'
     }
 
     if notifications & NOTIFY_EMAIL == NOTIFY_EMAIL
@@ -79,6 +81,10 @@ class StatusioClient
 
     if notifications & NOTIFY_SLACK == NOTIFY_SLACK
       notify['slack'] = '1'
+    end
+
+    if notifications & NOTIFY_MSTEAMS == NOTIFY_MSTEAMS
+      notify['msteams'] = '1'
     end
 
     return notify
